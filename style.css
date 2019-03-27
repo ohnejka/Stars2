@@ -1,0 +1,21 @@
+body {
+    width: 100%;
+	margin: 0;
+    overflow: hidden;
+    background-color: #002135;
+    
+    
+}
+
+.app {
+    background: radial-gradient(ellipse at top, #004169 , #002135 45%);
+}
+
+#animated {
+    position: absolute;
+    width: 100%;
+    height: 75%;
+}
+
+
+
