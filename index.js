@@ -71,6 +71,9 @@ class Plane {
             u_amplitude: { value: this.options.amplitude },
             u_frequency: { value: this.options.frequency },
             u_time: { value: 0.0 },
+            fogColor: { type: "c", value: "#002135" },
+    	    fogNear: { type: "f", value: 1 },
+    	    fogFar: { type: "f", value: 1000 }
         }
 
         this.geometry = new THREE.PlaneBufferGeometry(this.size, this.size, this.segments, this.segments);
@@ -80,6 +83,7 @@ class Plane {
             fragmentShader: document.getElementById('planeFS').innerHTML,
             side: THREE.DoubleSide,
             wireframe: true,
+            fog: true
 
         });
 
@@ -116,7 +120,7 @@ class Scene extends THREE.Scene {
         
         // should add BLUR and  FOG !!
 
-        this.fog = new THREE.Fog(this.background, 800, 10000);
+        this.fog = new THREE.Fog(this.background, 1, 1000);
 
         this.camera = new THREE.PerspectiveCamera(55, width / height, 1, 100000);
         this.camera.position.x = 0;
