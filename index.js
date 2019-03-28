@@ -73,7 +73,9 @@ class Plane {
             u_time: { value: 0.0 },
             fogColor: { type: "c", value: "#002135" },
     	    fogNear: { type: "f", value: 1 },
-    	    fogFar: { type: "f", value: 1000 }
+            fogFar: { type: "f", value: 1000 },
+            light: { type: "v3", value: new THREE.Color( 0xffffff) },
+            light_pos: { type: "v3", value: new THREE.Vector3( 0, 10, 10 ) }
         }
 
         this.geometry = new THREE.PlaneBufferGeometry(this.size, this.size, this.segments, this.segments);
@@ -83,7 +85,8 @@ class Plane {
             fragmentShader: document.getElementById('planeFS').innerHTML,
             side: THREE.DoubleSide,
             wireframe: true,
-            fog: true
+            fog: true,
+            lights: false
 
         });
 
@@ -118,7 +121,7 @@ class Scene extends THREE.Scene {
         this.renderer.setSize(width, height);
         this.renderer.setClearColor(this.background, 0);
         
-        // should add BLUR and  FOG !!
+        // should add BLUR!!
 
         this.fog = new THREE.Fog(this.background, 1, 1000);
 
@@ -129,7 +132,7 @@ class Scene extends THREE.Scene {
         
         this.pointLight = new THREE.PointLight(0xffffff, 5);
         this.pointLight.position.x = 0;
-        this.pointLight.position.y = 100;
+        this.pointLight.position.y = 10;
         this.pointLight.position.z = 10;
         this.add(this.pointLight);
 
