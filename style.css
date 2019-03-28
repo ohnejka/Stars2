@@ -3,11 +3,11 @@ body {
 	margin: 0;
     overflow: hidden;
     background-color: #002135;
-    
-    
 }
 
 .app {
+    
+    /*background: linear-gradient(to bottom, #004169 , #002135 45% );*/
     background: radial-gradient(ellipse at top, #004169 , #002135 45%);
 }
 

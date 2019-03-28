@@ -122,15 +122,20 @@
         }
 
         varying vec3 vNormal;
+        varying vec4 vPos;
     
         void main() {
 
-            vNormal = normal;
-    
+            vPos = projectionMatrix * vec4(position, 1.0);
+        
             float displacement = u_amplitude * cnoise( u_frequency * position + u_time );
+
+            vNormal = abs(normal * displacement);
     
             vec3 newPosition = position + normal * displacement;
             gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+            
+            
             
         }
     </script>
@@ -140,35 +145,35 @@
         uniform vec3    fogColor;
         uniform float   fogNear;
         uniform float   fogFar;
-        uniform vec3    light;
-        uniform vec3    light_pos;
 
         varying vec3 vNormal;
+        varying vec4 vPos;
 
         void main() {
 
-            vec3 light = vec3(0.0, 0.44, 0.71);
-            vec3 light2 = vec3(1., 1., 1.);
+            vec2 m = vec2(0. * 2.0 - 1.0, 0. * 2.0 + 1.0);
+            vec2 p = (gl_FragCoord.xy * 2.0 - vPos.xz) / min(vPos.x, vPos.y);
+
+            // one minus length
+            float t = 1.0 - length(m - p);
+
+            
+            vec3 light = vec3(1., 1., 1.);
             light = normalize(light);
-            light2 = normalize(light2);
 
-                float dProd = max(0.0,
-                        dot(vNormal, light));
-                float dProd2 = max(0.0,
-                                dot(vNormal, light2));
-                
-                float d = mix(dProd,dProd2, 0.5);
-                
-                float power = 3.;
+                float d = max(0.0,
+                                dot(vNormal, light));
 
+                float power = .8;
 
+            gl_FragColor = vec4(0.15 * d * power, 0.22*d * power, 0.31*d * power, 1.0);
+        
+            vec4 mask = mix( vec4(0.2), vec4(0.0 * d * power,
+                                                0.25*d * power,
+                                                0.41*d * power,
+                                                1.0), t);
 
-            gl_FragColor = vec4(0.0 * d * power,
-            0.25*d * power,
-            0.41*d * power,
-            1.0);
-
-
+            //gl_FragColor = mask;
 
 
             #ifdef USE_FOG
