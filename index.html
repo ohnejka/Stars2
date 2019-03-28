@@ -26,7 +26,6 @@
         uniform float 	u_frequency;
         uniform float   u_time;
         
-        
     
         vec3 mod289(vec3 x)
         {
@@ -138,11 +137,25 @@
     
     <script id="planeFS" type="shader">
         precision highp float;
+        uniform vec3    fogColor;
+        uniform float   fogNear;
+        uniform float   fogFar;
 
     
         void main() {
 
-        gl_FragColor = vec4(0.0, .25, .41, 1.0);
+            gl_FragColor = vec4(0.0, .25, .41, 1.0);
+            #ifdef USE_FOG
+                #ifdef USE_LOGDEPTHBUF_EXT
+                    float depth = gl_FragDepthEXT / gl_FragCoord.w;
+                #else
+                    float depth = gl_FragCoord.z / gl_FragCoord.w;
+                #endif
+                float fogFactor = smoothstep( fogNear, fogFar, depth );
+                gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
+            #endif
+
+        
 
         }
     </script>
