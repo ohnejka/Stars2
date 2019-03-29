@@ -2,13 +2,13 @@ body {
     width: 100%;
 	margin: 0;
     overflow: hidden;
-    background-color: #002135;
+    background-color:#4128ce;
 }
 
 .app {
     
     /*background: linear-gradient(to bottom, #004169 , #002135 45% );*/
-    background: radial-gradient(ellipse at top, #004169 , #002135 45%);
+    background: radial-gradient(ellipse at top, #8778e5 , #4128ce 45%);
 }
 
 #animated {

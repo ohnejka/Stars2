@@ -53,13 +53,13 @@ particlesJS.load("animated", "./particles.json", function() {
       this.segments = 200;
   
       this.options = new Options();
-      this.options.initGUI();
+      //this.options.initGUI();
   
       this.uniforms = {
         u_amplitude: { value: this.options.amplitude },
         u_frequency: { value: this.options.frequency },
         u_time: { value: 0.0 },
-        fogColor: { type: "c", value: "#002135" },
+        fogColor: { type: "c", value: "#4128ce" },
         fogNear: { type: "f", value: 1 },
         fogFar: { type: "f", value: 1000 }
       };
@@ -103,7 +103,7 @@ particlesJS.load("animated", "./particles.json", function() {
         antialias: true,
         alpha: true
       });
-      this.background = "#002135";
+      this.background = "#4128ce";
       this.renderer.setSize(width, height);
       this.renderer.setClearColor(this.background, 0);
   
@@ -134,17 +134,17 @@ particlesJS.load("animated", "./particles.json", function() {
   class Options {
     constructor() {
       this.amplitude = 20.0;
-      this.frequency = 0.011;
+      this.frequency = 0.01;
   
-      this.gui = new dat.GUI();
+      //this.gui = new dat.GUI();
     }
   
-    initGUI() {
-      this.gui.close();
-  
-      this.gui.add(this, "amplitude", 1.0, 15.0);
-      this.gui.add(this, "frequency", 0.01, 0.1);
-    }
+    //initGUI() {
+    //  this.gui.close();
+    //
+    //  this.gui.add(this, "amplitude", 1.0, 15.0);
+    // this.gui.add(this, "frequency", 0.01, 0.1);
+    //}
   }
   
   new App();
