@@ -1,6 +1,11 @@
 particlesJS.load("animated", "./particles.json", function() {
     //console.log("particles.js loaded");
   });
+
+particlesJS.load("animated-2", "./particles-small.json", function() {
+    //console.log("particles small loaded");
+  });
+
   
   class App {
     constructor() {
@@ -23,6 +28,8 @@ particlesJS.load("animated", "./particles.json", function() {
       this.addListeners();
   
       requestAnimationFrame(this.update);
+
+      
     }
   
     onResize() {
@@ -42,7 +49,7 @@ particlesJS.load("animated", "./particles.json", function() {
   
       this.plane.update(this.DELTA_TIME);
       this.scene.render();
-  
+      
       requestAnimationFrame(this.update);
     }
   }
@@ -53,7 +60,7 @@ particlesJS.load("animated", "./particles.json", function() {
       this.segments = 200;
   
       this.options = new Options();
-      this.options.initGUI();
+      //this.options.initGUI();
   
       this.uniforms = {
         u_amplitude: { value: this.options.amplitude },
@@ -82,7 +89,7 @@ particlesJS.load("animated", "./particles.json", function() {
   
       this.mesh = new THREE.Mesh(this.geometry, this.material);
       this.mesh.position.x = 0;
-      this.mesh.position.y = -100;
+      this.mesh.position.y = -140;
       this.mesh.position.z = 0;
       this.mesh.rotation.x = 360;
     }
@@ -91,36 +98,47 @@ particlesJS.load("animated", "./particles.json", function() {
     update(dt) {
       this.uniforms.u_amplitude.value = this.options.amplitude;
       this.uniforms.u_frequency.value = this.options.frequency;
-      this.uniforms.u_time.value += dt / 5500;
+      this.uniforms.u_time.value += dt / 7500;
     }
   }
   
   class Scene extends THREE.Scene {
     constructor(width, height) {
       super();
+
+      this.width = width;
+      this.height = height;
   
       this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true
       });
+
       this.background = "#002135";
       this.renderer.setSize(width, height);
       this.renderer.setClearColor(this.background, 0);
   
-      this.fog = new THREE.Fog(this.background, 1, 1000);
+      this.fog = new THREE.Fog(this.background, -700, 700);
+      this.fog2 = new THREE.Fog(this.background, 50, 900);
   
       this.camera = new THREE.PerspectiveCamera(55, width / height, 1, 100000);
       this.camera.position.x = 0;
-      this.camera.position.y = -100;
-      this.camera.position.z = 250;
+      this.camera.position.y = -120;
+      this.camera.position.z = 300;
+  
   
       this.controls = new THREE.OrbitControls(this.camera);
-      this.controls.enabled = false;
+      this.controls.enabled = true;
     }
-  
+
     render() {
+      
       this.renderer.autoClearColor = true;
+      this.camera.rotation.y = 70 * Math.PI / 180;
+      this.camera.rotation.x = 17 * Math.PI / 180;
+      
       this.renderer.render(this, this.camera);
+  
     }
   
     resize(newWidth, newHeight) {
@@ -129,22 +147,23 @@ particlesJS.load("animated", "./particles.json", function() {
   
       this.renderer.setSize(newWidth, newHeight);
     }
-  }
+
+}
   
   class Options {
     constructor() {
-      this.amplitude = 20.0;
-      this.frequency = 0.011;
+      this.amplitude = 22.0;
+      this.frequency = 0.005;
   
-      this.gui = new dat.GUI();
+      //this.gui = new dat.GUI();
     }
   
-    initGUI() {
-      this.gui.close();
-  
-      this.gui.add(this, "amplitude", 1.0, 15.0);
-      this.gui.add(this, "frequency", 0.01, 0.1);
-    }
+    //initGUI() {
+    //  this.gui.close();
+    //
+    //  this.gui.add(this, "amplitude", 1.0, 15.0);
+    // this.gui.add(this, "frequency", 0.01, 0.1);
+    //}
   }
   
   new App();
