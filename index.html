@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stars and Wires</title>
+    <title>Main page</title>
 
     <link rel="stylesheet" href="./style.css">
     <!-- particles lib -->
@@ -11,19 +11,16 @@
     <!-- THREE.JS lib -->
     <script src="./script/three.min.js" defer></script>
     <script src="./script/OrbitControls.js" defer></script>
-    <script src="./script/dat.gui.min.js" defer></script>
-    <script src="./script/EffectComposer.js" defer></script>
-    <script src="./script/CopyShader.js" defer></script>
-    <script src="./script/RenderPass.js" defer></script>
-    <script src="./script/ShaderPass.js" defer></script>
-    <script src="./script/BokehShader2.js" defer></script>
     <script src="./index.js" defer></script>
 </head>
 <body>
     <div class="app">
+        <div class="bg"></div>
         <div id="animated" class="container"></div>
         <div id="animated-2"></div>
     </div>
+
+    <!-- below shaders for index.js-->
 
     <script id="planeVS" type="shader">
         precision highp float;
@@ -126,16 +123,13 @@
             float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
             return 2.2 * n_xyz;
         }
-
         varying vec3 vNormal;
         varying vec4 vPos;
     
         void main() {
-
             vPos = projectionMatrix * vec4(position, 1.0);
         
             float displacement = u_amplitude * cnoise( u_frequency * position + u_time );
-
             vNormal = abs(normal * displacement);
     
             vec3 newPosition = position + normal * displacement;
@@ -151,27 +145,19 @@
         uniform vec3    fogColor;
         uniform float   fogNear;
         uniform float   fogFar;
-
         varying vec3 vNormal;
         varying vec4 vPos;
-
         void main() {
-
             vec2 m = vec2(0. * 2.0 - 1.0, 0. * 2.0 + 1.0);
             vec2 p = (gl_FragCoord.xy * 2.0 - vPos.xz) / min(vPos.x, vPos.y);
-
             // one minus length
             float t = 1.0 - length(m - p);
-
             
             vec3 light = vec3(1., 1., 1.);
             light = normalize(light);
-
                 float d = max(0.0,
                                 dot(vNormal, light));
-
-                float power = 8.0;
-
+                float power = 5.0;
             gl_FragColor = vec4(0.15 * d * power,
                             0.2 * d * power ,
                             0.35 * d * power,
@@ -181,10 +167,7 @@
                                                 0.25*d * power,
                                                 0.41*d * power,
                                                 1.0), t);
-
             //gl_FragColor = mask;
-
-
             #ifdef USE_FOG
                 #ifdef USE_LOGDEPTHBUF_EXT
                     float depth = gl_FragDepthEXT / gl_FragCoord.w;
@@ -194,9 +177,7 @@
                 float fogFactor = smoothstep( fogNear, fogFar, depth );
                 gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
             #endif
-
         
-
         }
     </script>
 
